@@ -6,7 +6,6 @@ const weatherData = document.getElementById("weather-data");
 searchButton.addEventListener("click", (event) => {
   event.preventDefault();
   const input = cityInputField.value.trim();
-
   const [city, countryCode] = input.split(",").map((item) => item.trim());
 
   let apiUrl;
@@ -29,7 +28,6 @@ searchButton.addEventListener("click", (event) => {
       const { main, name, sys, weather } = weatherData;
       const weatherContainer = document.getElementById("weather-data");
       const iconSrc = `/icons/${weather[0].icon}.svg`;
-      console.log(weatherData);
 
       weatherContainer.innerHTML = `
           <img src="${iconSrc}" alt="weather icon" class="weather-svg"/>
@@ -46,4 +44,33 @@ searchButton.addEventListener("click", (event) => {
   weatherData.classList.add("visible-weather-data");
   cityInputField.value = "";
   cityInputField.focus();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  navigator.geolocation.getCurrentPosition((position) => {
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${weatherApiKey}&units=imperial`;
+
+    fetch(url)
+      .then((response) => response.json())
+      .then((weatherData) => {
+        const { main, name, sys, weather } = weatherData;
+        const weatherContainer = document.getElementById("weather-data");
+        const iconSrc = `/icons/${weather[0].icon}.svg`;
+
+        weatherContainer.innerHTML = `
+            <img src="${iconSrc}" alt="weather icon" class="weather-svg"/>
+            <h2>${name}, <span class="country-code">${sys.country}</span></h2>
+            <h3>${weather[0].description.toUpperCase()} <span class="temperature">${Math.round(
+          main.temp
+        )}<sup>°F</sup></span></h3>
+        <h3>HUMIDITY <span class="temperature">${main.humidity}%</span></h3>
+            <h3>FEELS LIKE <span class="temperature">${Math.round(
+              main.feels_like
+            )}<sup>°F</sup></span></h3>
+        `;
+      });
+    weatherData.classList.add("visible-weather-data");
+  });
 });
