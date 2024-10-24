@@ -70,7 +70,7 @@ main {
   align-items: center;
   flex-direction: column;
   width: 90%;
-  height: 19.275rem;
+  max-height: 20.5rem;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 1rem;
   backdrop-filter: blur(10px);
