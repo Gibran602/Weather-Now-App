@@ -203,7 +203,8 @@ footer p {
     width: 20%;
   }
   .weather-data {
-    height: 30rem;
+    /* max-height: 40rem; */
+    max-height: fit-content;
     width: 25%;
   }
   .weather-data h2 {
